@@ -112,10 +112,14 @@ export function AppsTable({ apps }: AppsTableProps) {
                 </TableCell>
                 <TableCell>
                   {app.localPath ? (
-                    <span className="text-xs text-muted-foreground font-mono flex items-center gap-1">
+                    <a
+                      href={`vscode://file${app.localPath}`}
+                      className="text-xs text-muted-foreground font-mono flex items-center gap-1 hover:text-primary transition-colors"
+                      title={`Open in VS Code: ${app.localPath}`}
+                    >
                       <FolderOpen className="h-3 w-3 shrink-0" />
                       {app.localPath.replace("/Users/cb/Apps/", "~/Apps/")}
-                    </span>
+                    </a>
                   ) : (
                     <span className="text-muted-foreground text-sm">—</span>
                   )}
