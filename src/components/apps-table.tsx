@@ -31,12 +31,7 @@ export function AppsTable({ apps }: AppsTableProps) {
   const q = query.trim().toLowerCase();
   const visible = apps
     .filter((a) => !hideWithoutPort || a.port !== null)
-    .filter((a) =>
-      !q ||
-      a.name.toLowerCase().includes(q) ||
-      (a.githubName ?? "").toLowerCase().includes(q) ||
-      (a.localPath ?? "").toLowerCase().includes(q)
-    );
+    .filter((a) => !q || a.name.toLowerCase().includes(q));
 
   async function handleDelete(app: App) {
     if (!confirm(`Delete "${app.name}"?`)) return;
@@ -63,7 +58,7 @@ export function AppsTable({ apps }: AppsTableProps) {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by name, repo or path…"
+            placeholder="Search by name…"
             className="h-7 pl-8 pr-7 text-xs"
           />
           {query && (

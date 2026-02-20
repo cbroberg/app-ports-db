@@ -212,6 +212,36 @@ function isProjectRoot(dir: string): boolean {
   );
 }
 
+/**
+ * Walks up from `dir` (exclusive) to SCAN_ROOT (exclusive) looking for a
+ * monorepo root — a directory that contains turbo.json, pnpm-workspace.yaml,
+ * or a package.json with a `workspaces` field.
+ * Returns the monorepo root path, or null if none found.
+ */
+function findMonorepoRoot(dir: string): string | null {
+  let current = path.dirname(dir);
+  while (current !== SCAN_ROOT && current !== path.dirname(current)) {
+    if (
+      fs.existsSync(path.join(current, "turbo.json")) ||
+      fs.existsSync(path.join(current, "pnpm-workspace.yaml")) ||
+      fs.existsSync(path.join(current, "pnpm-workspace.yml"))
+    ) {
+      return current;
+    }
+    const pkgPath = path.join(current, "package.json");
+    if (fs.existsSync(pkgPath)) {
+      try {
+        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+        if (pkg.workspaces) return current;
+      } catch {
+        // ignore
+      }
+    }
+    current = path.dirname(current);
+  }
+  return null;
+}
+
 function scanDir(dir: string, depth: number, results: ScannedApp[]): void {
   if (depth > MAX_DEPTH) return;
 
@@ -221,8 +251,13 @@ function scanDir(dir: string, depth: number, results: ScannedApp[]): void {
     const { githubName, githubUrl } = detectGithub(dir);
 
     if (port !== null || githubName !== null) {
+      const monorepoRoot = findMonorepoRoot(dir);
+      const name = monorepoRoot
+        ? `${path.basename(monorepoRoot)}/${path.basename(dir)}`
+        : path.basename(dir);
+
       results.push({
-        name: path.basename(dir),
+        name,
         localPath: dir,
         port,
         githubName,
