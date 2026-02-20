@@ -11,10 +11,12 @@ export async function GET() {
 
   const usedPorts = new Set(rows.map((r) => r.port as number));
 
+  const ports: number[] = [];
   let candidate = 3000;
-  while (usedPorts.has(candidate)) {
+  while (ports.length < 5) {
+    if (!usedPorts.has(candidate)) ports.push(candidate);
     candidate++;
   }
 
-  return NextResponse.json({ port: candidate });
+  return NextResponse.json({ port: ports[0], ports });
 }
