@@ -3,10 +3,11 @@
 import {
   Play, Square, RotateCcw, Loader2,
   ExternalLink, Pencil, Trash2, Terminal, Rocket, Heart,
-  Hammer, Package,
+  Hammer, Package, MoreHorizontal,
 } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { VSCodeIcon, GitHubIcon } from "./brand-icons";
 import type { App } from "@/drizzle/schema";
@@ -160,64 +161,70 @@ export function AppCard({ app, actionLoading, onProcessAction, onBuildAction, on
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           )}
-          {app.localPath && (
-            <a
-              href={`vscode://file${app.localPath}`}
-              className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-              title="Open in VS Code"
-            >
-              <VSCodeIcon className="h-3.5 w-3.5" />
-            </a>
-          )}
-          {app.githubUrl && (
-            <a
-              href={app.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-              title="GitHub"
-            >
-              <GitHubIcon className="h-3.5 w-3.5" />
-            </a>
-          )}
-          <CardAction
-            onClick={() => onToggleFavorite(app)}
-            title={app.favorite ? "Remove from favorites" : "Add to favorites"}
-            icon={<Heart className={cn("h-3.5 w-3.5", app.favorite ? "fill-red-500 text-red-500" : "")} />}
-            className={app.favorite ? "text-red-500 hover:text-red-400 hover:bg-red-500/10" : undefined}
-          />
-          <CardAction
-            onClick={() => onToggleAutoBoot(app)}
-            title={app.autoBoot ? "Auto-boot on (click to disable)" : "Auto-boot off (click to enable)"}
-            icon={<Rocket className="h-3.5 w-3.5" />}
-            className={app.autoBoot ? "text-primary hover:text-primary/80 hover:bg-primary/10" : undefined}
-          />
-          {app.localPath && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" title="Build options">
-                  <Hammer className="h-3.5 w-3.5" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onBuildAction(app, "install")}>
-                  <Package className="h-3.5 w-3.5 mr-2" />
-                  Install deps
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors" title="More options">
+                <MoreHorizontal className="h-3.5 w-3.5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44">
+              {app.localPath && (
+                <DropdownMenuItem asChild>
+                  <a href={`vscode://file${app.localPath}`} className="flex items-center">
+                    <VSCodeIcon className="h-3.5 w-3.5 mr-2 shrink-0" />
+                    Open in VS Code
+                  </a>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onBuildAction(app, "build")}>
-                  <Hammer className="h-3.5 w-3.5 mr-2" />
-                  Build
+              )}
+              {app.githubUrl && (
+                <DropdownMenuItem asChild>
+                  <a href={app.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                    <GitHubIcon className="h-3.5 w-3.5 mr-2 shrink-0" />
+                    GitHub
+                  </a>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onBuildAction(app, "run-build")}>
-                  <Play className="h-3.5 w-3.5 mr-2" />
-                  Build + Run
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-          <CardAction onClick={() => onShowLogs(app)} title="Logs" icon={<Terminal className="h-3.5 w-3.5" />} />
-          <CardAction onClick={() => onEdit(app)} title="Edit" icon={<Pencil className="h-3.5 w-3.5" />} />
-          <CardAction onClick={() => onDelete(app)} title="Delete" icon={<Trash2 className="h-3.5 w-3.5" />} className="hover:text-destructive hover:bg-destructive/10" />
+              )}
+              {(app.localPath || app.githubUrl) && <DropdownMenuSeparator />}
+              <DropdownMenuItem onClick={() => onToggleFavorite(app)}>
+                <Heart className={cn("h-3.5 w-3.5 mr-2 shrink-0", app.favorite ? "fill-red-500 text-red-500" : "")} />
+                {app.favorite ? "Remove favorite" : "Add favorite"}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onToggleAutoBoot(app)}>
+                <Rocket className={cn("h-3.5 w-3.5 mr-2 shrink-0", app.autoBoot ? "text-primary" : "")} />
+                {app.autoBoot ? "Auto-boot: on" : "Auto-boot: off"}
+              </DropdownMenuItem>
+              {app.localPath && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => onBuildAction(app, "install")}>
+                    <Package className="h-3.5 w-3.5 mr-2 shrink-0" />
+                    Install deps
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onBuildAction(app, "build")}>
+                    <Hammer className="h-3.5 w-3.5 mr-2 shrink-0" />
+                    Build
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onBuildAction(app, "run-build")}>
+                    <Play className="h-3.5 w-3.5 mr-2 shrink-0" />
+                    Build + Run
+                  </DropdownMenuItem>
+                </>
+              )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onShowLogs(app)}>
+                <Terminal className="h-3.5 w-3.5 mr-2 shrink-0" />
+                View logs
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onEdit(app)}>
+                <Pencil className="h-3.5 w-3.5 mr-2 shrink-0" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onDelete(app)} className="text-destructive focus:text-destructive">
+                <Trash2 className="h-3.5 w-3.5 mr-2 shrink-0" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
