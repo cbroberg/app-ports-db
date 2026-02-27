@@ -63,9 +63,9 @@ export function ReadmeViewer({ app, open, onOpenChange }: Props) {
           ) : content === null ? (
             <p className="text-sm text-muted-foreground animate-pulse">Loading…</p>
           ) : (
+            <div className="prose prose-sm dark:prose-invert max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              className="prose prose-sm dark:prose-invert max-w-none"
               components={{
                 h1: ({ children }) => <h1 className="text-xl font-bold mt-0 mb-4 pb-2 border-b border-border">{children}</h1>,
                 h2: ({ children }) => <h2 className="text-base font-semibold mt-6 mb-3 pb-1 border-b border-border/50">{children}</h2>,
@@ -91,6 +91,7 @@ export function ReadmeViewer({ app, open, onOpenChange }: Props) {
             >
               {content}
             </ReactMarkdown>
+            </div>
           )}
         </div>
       </SheetContent>
