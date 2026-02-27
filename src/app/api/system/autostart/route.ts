@@ -3,11 +3,11 @@ import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 
-const PLIST_LABEL = "com.cbroberg.code-launch";
+const PLIST_LABEL = "com.cbroberg.code-launcher";
 const PLIST_PATH = path.join(process.env.HOME || "/Users/cb", "Library", "LaunchAgents", `${PLIST_LABEL}.plist`);
-const APP_DIR = path.join(process.env.HOME || "/Users/cb", "Apps", "cbroberg", "code-launch");
+const APP_DIR = path.join(process.env.HOME || "/Users/cb", "Apps", "cbroberg", "code-launcher");
 const NODE_BIN = path.join(process.env.HOME || "/Users/cb", ".local", "share", "fnm", "aliases", "default", "bin");
-const LOG_DIR = path.join(process.env.HOME || "/Users/cb", "Library", "Logs", "code-launch");
+const LOG_DIR = path.join(process.env.HOME || "/Users/cb", "Library", "Logs", "code-launcher");
 
 function getPlist(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
