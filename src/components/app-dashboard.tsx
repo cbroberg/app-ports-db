@@ -13,10 +13,13 @@ import {
   FolderOpen, ExternalLink, Pencil, Trash2,
   Terminal, Rocket, Plus, ArrowUpDown, Heart,
   Hammer, Package, Power,
+  Sun, Moon, Monitor, ChevronDown,
 } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenuSeparator, DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "next-themes";
 import type { App } from "@/drizzle/schema";
 import { EditAppDialog } from "./edit-app-dialog";
 import { AppCard } from "./app-card";
@@ -60,6 +63,7 @@ export function AppDashboard({ apps: initialApps }: Props) {
   const searchRef = useRef<HTMLInputElement>(null);
   const [actionLoading, setActionLoading] = useState<Record<number, string>>({});
   const [autostartEnabled, setAutostartEnabled] = useState<boolean | null>(null);
+  const { theme, setTheme } = useTheme();
 
   // Sync when server re-renders (after router.refresh())
   useEffect(() => { setApps(initialApps); }, [initialApps]);
@@ -522,28 +526,79 @@ export function AppDashboard({ apps: initialApps }: Props) {
               {probing ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
             </Button>
 
-            <Button onClick={handleScan} disabled={scanning || probing} size="sm" className="h-8 gap-1.5">
-              {scanning ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ScanLine className="h-3.5 w-3.5" />}
-              {scanning ? "Scanning…" : "Scan"}
-            </Button>
+            {/* Avatar / settings dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center justify-center h-8 w-8 rounded-full bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition-opacity shrink-0">
+                  CL
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
 
-            {autostartEnabled !== null && (
-              <Button
-                variant={autostartEnabled ? "default" : "outline"}
-                size="sm"
-                onClick={handleToggleAutostart}
-                className="h-8 gap-1.5"
-                title={autostartEnabled ? "Auto-start enabled — click to disable" : "Enable auto-start at login"}
-              >
-                <Power className="h-3.5 w-3.5" />
-                {autostartEnabled ? "Auto-start on" : "Auto-start off"}
-              </Button>
-            )}
+                <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pb-1">
+                  Actions
+                </DropdownMenuLabel>
 
-            <Button onClick={() => setNewProjectOpen(true)} size="sm" className="h-8 gap-1.5">
-              <Plus className="h-3.5 w-3.5" />
-              New
-            </Button>
+                <DropdownMenuItem
+                  onClick={handleScan}
+                  disabled={scanning || probing}
+                  className="gap-2"
+                >
+                  {scanning ? <Loader2 className="h-4 w-4 animate-spin" /> : <ScanLine className="h-4 w-4" />}
+                  {scanning ? "Scanning…" : "Scan projects"}
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => setNewProjectOpen(true)}
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  New project
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={handleToggleAutostart}
+                  className="gap-2"
+                >
+                  <Power className={`h-4 w-4 ${autostartEnabled ? "text-primary" : ""}`} />
+                  {autostartEnabled ? "Auto-start: on" : "Auto-start: off"}
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pb-1">
+                  Theme
+                </DropdownMenuLabel>
+
+                <DropdownMenuItem
+                  onClick={() => setTheme("light")}
+                  className="gap-2"
+                >
+                  <Sun className="h-4 w-4" />
+                  Light
+                  {theme === "light" && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />}
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => setTheme("dark")}
+                  className="gap-2"
+                >
+                  <Moon className="h-4 w-4" />
+                  Dark
+                  {theme === "dark" && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />}
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => setTheme("system")}
+                  className="gap-2"
+                >
+                  <Monitor className="h-4 w-4" />
+                  System
+                  {theme === "system" && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />}
+                </DropdownMenuItem>
+
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 

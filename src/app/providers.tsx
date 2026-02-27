@@ -5,9 +5,9 @@ import { Toaster } from "@/components/ui/sonner";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
       {children}
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position="bottom-right" />
     </ThemeProvider>
   );
 }
