@@ -3,7 +3,7 @@
 import {
   Play, Square, RotateCcw, Loader2,
   ExternalLink, Pencil, Trash2, Terminal, Rocket, Heart,
-  Hammer, Package, MoreHorizontal,
+  Hammer, Package, MoreHorizontal, Bot,
 } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
@@ -175,6 +175,12 @@ export function AppCard({ app, actionLoading, onProcessAction, onBuildAction, on
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
+              {app.localPath && (
+                <DropdownMenuItem onClick={() => fetch(`/api/apps/${app.id}/launch-cc`, { method: "POST" })}>
+                  <Bot className="h-3.5 w-3.5 mr-2 shrink-0" />
+                  Launch Claude Code
+                </DropdownMenuItem>
+              )}
               {app.localPath && (
                 <DropdownMenuItem asChild>
                   <a href={`vscode://file${app.localPath}`} className="flex items-center">
