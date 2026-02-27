@@ -3,7 +3,7 @@
 import {
   Play, Square, RotateCcw, Loader2,
   ExternalLink, Pencil, Trash2, Terminal, Rocket, Heart,
-  Hammer, Package, MoreHorizontal, Bot,
+  Hammer, Package, MoreHorizontal, Bot, FileText,
 } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
@@ -35,9 +35,10 @@ interface Props {
   onEdit: (app: App) => void;
   onDelete: (app: App) => void;
   onShowLogs: (app: App) => void;
+  onShowReadme: (app: App) => void;
 }
 
-export function AppCard({ app, actionLoading, onProcessAction, onBuildAction, onToggleAutoBoot, onToggleFavorite, onEdit, onDelete, onShowLogs }: Props) {
+export function AppCard({ app, actionLoading, onProcessAction, onBuildAction, onToggleAutoBoot, onToggleFavorite, onEdit, onDelete, onShowLogs, onShowReadme }: Props) {
   const isRunning = app.status === "running";
   const isStarting = app.status === "starting";
   const isError = app.status === "error";
@@ -195,6 +196,12 @@ export function AppCard({ app, actionLoading, onProcessAction, onBuildAction, on
                     <GitHubIcon className="h-3.5 w-3.5 mr-2 shrink-0" />
                     Open in GitHub
                   </a>
+                </DropdownMenuItem>
+              )}
+              {app.localPath && (
+                <DropdownMenuItem onClick={() => onShowReadme(app)}>
+                  <FileText className="h-3.5 w-3.5 mr-2 shrink-0" />
+                  README.md
                 </DropdownMenuItem>
               )}
               {(app.localPath || app.githubUrl) && <DropdownMenuSeparator />}

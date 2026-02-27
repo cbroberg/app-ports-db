@@ -24,6 +24,7 @@ import type { App } from "@/drizzle/schema";
 import { EditAppDialog } from "./edit-app-dialog";
 import { AppCard } from "./app-card";
 import { LogViewer } from "./log-viewer";
+import { ReadmeViewer } from "./readme-viewer";
 import { AppSidebarShell } from "./app-sidebar-shell";
 import { NewProjectDialog } from "./new-project-dialog";
 import { VSCodeIcon, GitHubIcon } from "./brand-icons";
@@ -51,6 +52,7 @@ export function AppDashboard({ apps: initialApps }: Props) {
   const [apps, setApps] = useState<App[]>(initialApps);
   const [editingApp, setEditingApp] = useState<App | null>(null);
   const [logApp, setLogApp] = useState<App | null>(null);
+  const [readmeApp, setReadmeApp] = useState<App | null>(null);
   const [view, setView] = useState<"grid" | "list">("grid");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("running");
@@ -625,6 +627,7 @@ export function AppDashboard({ apps: initialApps }: Props) {
                   onEdit={setEditingApp}
                   onDelete={handleDelete}
                   onShowLogs={setLogApp}
+                  onShowReadme={setReadmeApp}
                 />
               ))}
             </div>
@@ -663,6 +666,14 @@ export function AppDashboard({ apps: initialApps }: Props) {
           app={logApp}
           open={!!logApp}
           onOpenChange={open => !open && setLogApp(null)}
+        />
+      )}
+
+      {readmeApp && (
+        <ReadmeViewer
+          app={readmeApp}
+          open={!!readmeApp}
+          onOpenChange={open => !open && setReadmeApp(null)}
         />
       )}
 
