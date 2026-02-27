@@ -37,30 +37,31 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #f5f4f2;       /* warm off-white, less clinical than pure #f8fafc */
+  --foreground: #1a1814;       /* warm near-black */
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #1a1814;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #1a1814;
   --primary: #f45d35;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #334155;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #e0e7ff;
-  --accent-foreground: #3730a3;
+  --secondary: #ede9e4;
+  --secondary-foreground: #3d3830;
+  --muted: #ede9e4;
+  --muted-foreground: #78716c;  /* warm stone */
+  --accent: #fde8e2;            /* very light orange tint — matches brand */
+  --accent-foreground: #c13d18;
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
+  --border: #e2ddd8;            /* warm border */
+  --input: #e2ddd8;
   --ring: #f45d35;
   --chart-1: #f45d35;
   --chart-2: #06b6d4;
   --chart-3: #f59e0b;
   --chart-4: #10b981;
   --chart-5: #ec4899;
+  --sidebar: #eceae6;           /* slightly darker warm sidebar */
 }
 
 .dark {
