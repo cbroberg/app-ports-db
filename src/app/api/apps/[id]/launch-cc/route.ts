@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/drizzle/db";
+import { db } from "@/drizzle";
 import { apps } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { execFile } from "child_process";

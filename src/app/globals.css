@@ -77,7 +77,7 @@
   --secondary-foreground: #a1a1aa;
   --muted: #1c1c1f;
   --muted-foreground: #71717a;
-  --accent: #1c1c1f;
+  --accent: #2d1410;            /* dark orange tint — matches brand */
   --accent-foreground: #fafafa;
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
