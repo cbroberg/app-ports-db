@@ -34,6 +34,21 @@ export const processLogs = sqliteTable("process_logs", {
   createdAt: text("created_at").notNull().default(new Date().toISOString()),
 });
 
+export const agents = sqliteTable("agents", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  agentId: text("agent_id").notNull().unique(), // first 8 chars of token (human-readable id)
+  name: text("name").notNull(), // hostname
+  platform: text("platform"),
+  version: text("version"),
+  scanRoot: text("scan_root"),
+  status: text("status").notNull().default("offline"), // "online" | "offline"
+  connectedAt: text("connected_at"),
+  lastSeenAt: text("last_seen_at"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
 export type App = typeof apps.$inferSelect;
 export type NewApp = typeof apps.$inferInsert;
 export type ProcessLog = typeof processLogs.$inferSelect;
+export type Agent = typeof agents.$inferSelect;

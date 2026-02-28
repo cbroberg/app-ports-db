@@ -1,0 +1,20 @@
+{
+  "name": "cl-agent",
+  "version": "0.1.0",
+  "description": "Code Launcher Agent — local Mac daemon for OS-specific operations",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/ws": "^8",
+    "tsx": "^4.19.4",
+    "typescript": "^5"
+  }
+}
