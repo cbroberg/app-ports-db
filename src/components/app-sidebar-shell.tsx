@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { BookOpen, Container, LayoutGrid, Heart } from "lucide-react";
+import { BookOpen, Container, LayoutGrid, Heart, Plane } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -46,6 +46,7 @@ export function AppSidebarShell({ children }: { children?: React.ReactNode }) {
         <div className="space-y-0.5">
           {navItem("/", <LayoutGrid className="h-3.5 w-3.5" />, "Apps")}
           {navItem("/docker", <Container className="h-3.5 w-3.5" />, "Docker")}
+          {navItem("/fly", <Plane className="h-3.5 w-3.5" />, "Fly.io")}
           {navItem("/instructions", <BookOpen className="h-3.5 w-3.5" />, "API docs")}
         </div>
 
