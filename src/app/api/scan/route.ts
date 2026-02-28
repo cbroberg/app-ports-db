@@ -28,17 +28,18 @@ export async function POST() {
       .from(apps)
       .where(eq(apps.localPath, app.localPath));
 
-    const techFields = {
-      packageManager: app.packageManager,
-      framework: app.framework,
-      runtime: app.runtime,
-      devCommand: app.devCommand,
-      projectType: app.projectType,
-    };
-
     if (existing) {
       // Only fill port if existing.port is null (preserve manual edits)
       const portToSet = existing.port ?? app.port;
+
+      // Preserve manually-set DB values when scanner can't detect them
+      const techFields = {
+        packageManager: app.packageManager ?? existing.packageManager,
+        framework: app.framework ?? existing.framework,
+        runtime: app.runtime ?? existing.runtime,
+        devCommand: app.devCommand ?? existing.devCommand,
+        projectType: app.projectType ?? existing.projectType,
+      };
 
       try {
         await db
@@ -68,7 +69,16 @@ export async function POST() {
         updated++;
       }
     } else {
-      // New app — try inserting with its detected port
+      // New app — use scanner values directly (no existing to preserve)
+      const techFields = {
+        packageManager: app.packageManager,
+        framework: app.framework,
+        runtime: app.runtime,
+        devCommand: app.devCommand,
+        projectType: app.projectType,
+      };
+
+      // Try inserting with its detected port
       let portToInsert = app.port;
 
       // If no port detected, or insert will conflict, auto-assign a vacant one
